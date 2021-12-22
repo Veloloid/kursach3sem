@@ -1,0 +1,6 @@
+﻿  main.cpp
+C:\Users\Алексей Лебедев\source\repos\Kursach3sem\mln.h(180,14): warning C4101: k: неиспользованная локальная переменная
+C:\Users\Алексей Лебедев\source\repos\Kursach3sem\mln.h(180,7): warning C4101: count: неиспользованная локальная переменная
+C:\Users\Алексей Лебедев\source\repos\Kursach3sem\main.cpp(498,13): warning C4326: возвращаемый тип "main" должен быть "int", а не "void"
+C:\Users\Алексей Лебедев\source\repos\Kursach3sem\mln.h(156): warning C4715: mln::fulldata: значение возвращается не при всех путях выполнения
+  Kursach3sem.vcxproj -> C:\Users\Алексей Лебедев\source\repos\Kursach3sem\Debug\Kursach3sem.exe
