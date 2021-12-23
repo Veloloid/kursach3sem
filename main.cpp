@@ -6,12 +6,6 @@ using namespace std;
 using namespace mln;
 
 
-
-
-
-
-
-
 class Good
 {
 private:
@@ -114,6 +108,7 @@ protected:
 public:
 
 	int GetId() { return this->id; }
+	void SetPassword(string password) { this->password = password; }
 
 	void save(char mode = 'a') {
 		string user = to_string(id) + "," + name + "," + lastname + "," + login + "," + password+"|";
@@ -186,8 +181,7 @@ public:
 		string line;
 		int i = 0;
 		if (!file.is_open()) {
-			cout << "Невозможно открыть файл" << endl;
-			i = 0;
+			i = 1;
 		}
 		else {
 			int max = 0;
@@ -202,8 +196,7 @@ public:
 		return i;
 	}
 
-	void PrintGoods() {
-		vector<string> goods = notes("Goods.txt");
+	void PrintGoods(vector<string> goods = notes("Goods.txt")) {
 		for (std::vector<string>::size_type i = 0; i != goods.size(); i++) {
 			int id = stoi(GetParameter(goods[i], 0));
 			string name = GetParameter(goods[i], 1);
@@ -336,9 +329,9 @@ public:
 			int type = stoi(GetParameter(tasks[i], 3));
 			int count = stoi(GetParameter(tasks[i], 4));
 			Task* task = new Task(id, user_id, good_id, type, count);
-			if (task->GetId() == id) {
+			if (task->GetId() == this->id) {
 				string line;
-				line = User::GenerateId(to_string(user_id) + "reports.txt") + "," + this->print_task('r') + "," + "Выполнена|";
+				line = to_string(User::GenerateId(to_string(user_id) + "reports.txt")) + "," + this->print_task('r') + "," + "Выполнена|";
 				Record(to_string(user_id) + "reports.txt", line, 'a');
 			}
 			else {
@@ -363,11 +356,7 @@ private:
 	string tasks[10];
 
 public:
-	//string[] GetTasks();
-	//void SetTasks(string[] tasks);
 
-	void MakeReport();
-	void CompleteTask();
 
 	Worker() {
 		this->id = 0;
@@ -401,7 +390,8 @@ public:
 				break;
 			case 2: worker -> ChangeGood();
 				break;
-			case 3: break;
+			case 3: worker->ChangePassword(worker->GetId());
+				break;
 			case 4: worker->complete_tasks();
 				break;
 			case 0:exit(0);
@@ -411,6 +401,8 @@ public:
 			}
 		}
 	}
+
+	
 
 	void Print_tasks() {
 		vector<string> tasks = notes("tasks.txt");
@@ -448,7 +440,29 @@ public:
 		}
 	}
 
-	virtual void ChangePassword(int id){}
+	virtual void ChangePassword(int id) {
+		string new_password;
+		cout << "Введите новый пароль: " << endl;
+		cin >> new_password;
+		vector<string> users = notes("users.txt");
+		int index = 0;
+		for (std::vector<string>::size_type i = 0; i != users.size(); i++) {
+			int id = stoi(GetParameter(users[i], 0));
+			string name = GetParameter(users[i], 1);
+			string  lastname = GetParameter(users[i], 2);
+			string login = GetParameter(users[i], 3);
+			string password = GetParameter(users[i], 4);
+			Worker* worker = new Worker(id, name, lastname, login, password);
+			if (worker->GetId() == id) { worker->SetPassword(new_password); }
+				if (index == 0) {
+					worker->save('c');
+				}
+				else {
+					worker->save();
+				}
+				index++;
+		}
+	}
 
 	virtual void SignIn(){
 		string login, password;
@@ -572,7 +586,7 @@ public:
 				break;
 			case 2: admin->Registration();
 				break;
-			case 3: admin->PrintGoods();
+			case 3: admin->test_sort();
 				break;
 			case 4: admin->print_users();
 				break;
@@ -612,6 +626,44 @@ public:
 		}
 	}
 	
+	void test_sort() {
+		PrintGoods();
+		int choice;
+		string temp;
+		cout << "1 - сортировка по возрастанию, 2 - сортировка по убыванию: " << endl;
+		cin >> choice;
+		vector<string> goods = notes("Goods.txt");
+		switch (choice) {
+		case 1:
+			for (std::vector<string>::size_type i = 0; i < goods.size()-1; i++){
+				for (std::vector<string>::size_type j = 0; j < goods.size()-i-1; j++){
+					if (stoi(GetParameter(goods[j], 2)) > stoi(GetParameter(goods[j+1], 2))) {
+						// меняем элементы местами
+						temp = goods[j];
+						goods[j] = goods[j + 1];
+						goods[j + 1] = temp;
+					}
+				}
+			}
+			PrintGoods(goods);
+			break;
+		case 2:
+			for (std::vector<string>::size_type i = 0; i < goods.size() - 1; i++) {
+				for (std::vector<string>::size_type j = 0; j < goods.size() - i - 1; j++) {
+					if (stoi(GetParameter(goods[j], 2)) < stoi(GetParameter(goods[j + 1], 2))) {
+						// меняем элементы местами
+						temp = goods[j];
+						goods[j] = goods[j + 1];
+						goods[j + 1] = temp;
+					}
+				}
+			}
+			PrintGoods(goods);
+			break;
+		default: cout << "Нет такой сортировки" << endl;
+			break;
+		}
+	}
 
 	void DeleteGood() {
 		PrintGoods();
