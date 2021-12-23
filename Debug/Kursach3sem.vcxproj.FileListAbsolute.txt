@@ -2,3 +2,5 @@ C:\Users\Лёшик\source\repos\Kursach3sem\Debug\Kursach3sem.exe
 C:\Users\Лёшик\source\repos\Kursach3sem\Debug\Kursach3sem.pdb
 C:\Users\Алексей Лебедев\source\repos\Kursach3sem\Debug\Kursach3sem.exe
 C:\Users\Алексей Лебедев\source\repos\Kursach3sem\Debug\Kursach3sem.pdb
+D:\Projects\Kursach3sem\Debug\Kursach3sem.exe
+D:\Projects\Kursach3sem\Debug\Kursach3sem.pdb
