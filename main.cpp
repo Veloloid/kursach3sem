@@ -93,7 +93,7 @@ public:
 			if (task->GetId() == id) {
 				string line;
 				line = User::GenerateId(to_string(user_id) + "reports.txt") + "," + this->print_task('r') + "," + "Выполнена|";
-				Record((to_string(user_id) + "reports.txt", line, 'a');
+				Record(to_string(user_id) + "reports.txt", line, 'a');
 			}
 			else {
 				if (index == 0) {
