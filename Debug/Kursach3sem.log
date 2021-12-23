@@ -1,4 +1,6 @@
 ﻿  main.cpp
 D:\Projects\Kursach3sem\mln.h(180,14): warning C4101: 'k': unreferenced local variable
 D:\Projects\Kursach3sem\mln.h(180,7): warning C4101: 'count': unreferenced local variable
-D:\Projects\Kursach3sem\main.cpp(96): fatal error C1075: '{': no matching token found
+D:\Projects\Kursach3sem\main.cpp(700,13): warning C4326: return type of 'main' should be 'int' instead of 'void'
+D:\Projects\Kursach3sem\mln.h(156): warning C4715: 'mln::fulldata': not all control paths return a value
+  Kursach3sem.vcxproj -> D:\Projects\Kursach3sem\Debug\Kursach3sem.exe

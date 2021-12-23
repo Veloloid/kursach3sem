@@ -9,106 +9,7 @@ using namespace mln;
 
 
 
-class Task
-{
-private:
-	int id;
-	int user_id;
-	int good_id;
-	int count;
-	int type;
 
-public:
-
-	int GetId() { return this -> id; }
-	void SetId(int id) { this->id = id; }
-	int GetUserId() { return this->user_id; }
-	void SetUserId(int UserId) { this->user_id = UserId; }
-	int GetGoodId() { return this->good_id; }
-	void SetGoodId(int good_id) { this->good_id = good_id; }
-	int GetCount() { return this->count; }
-	void SetCount(int count) { this->count = count; }
-	int GetType() { return this->type; }
-	void SetType(int type) { this->type = type; }
-
-	Task() {
-		this->id = 0;
-		this->user_id = 0;
-		this->good_id = 0;
-		this->count = 0;
-		this->type = 0;
-	}
-
-	Task(int id, int user_id, int good_id, int type, int count) {
-		this->id = id;
-		this->user_id = user_id;
-		this->good_id = good_id;
-		this->count = count;
-		this->type = type;
-	}
-
-	string print_task(char type='p') {
-		string string_type, good_name, user_name;
-		if (this->type == 1) {
-			string_type = "Загрузка";
-		}
-		else {
-			string_type = "Разгрузка";
-		}
-		vector<string> goods = notes("Goods.txt");
-		int index = 0;
-		for (std::vector<string>::size_type i = 0; i != goods.size(); i++) {
-			if (stoi(GetParameter(goods[i], 0)) == good_id) { good_name = GetParameter(goods[i], 1); }
-		}
-	    vector<string> users = notes("users.txt");
-		index = 0;
-		for (std::vector<string>::size_type i = 0; i != users.size(); i++) {
-			if (stoi(GetParameter(users[i], 0)) == user_id) { user_name = GetParameter(users[i], 1) + " " + GetParameter(users[i], 2); }
-		}
-		if (type == 'p') {
-			cout << "Task(" << to_string(this->id) << ", " << user_name << ", " << good_name << "," << string_type << "," << to_string(this->count) << ")" << endl;
-			return "0";
-		}
-		else {
-			return   user_name + ", " + good_name + "," + string_type + "," + to_string(this->count);
-		}
-	}
-
-	void save(char mode = 'a') {
-		string task = to_string(this->id) + "," + to_string(this->user_id) + "," + to_string(this->good_id) + "," + to_string(this->type) + "," 
-			+ to_string(this->count) + "|";
-		Record("tasks.txt", task, mode);
-	}
-
-	void complete() {
-		vector<string> tasks = notes("tasks.txt");
-		int index = 0;
-		for (std::vector<string>::size_type i = 0; i != tasks.size(); i++) {
-			int id = stoi(GetParameter(tasks[i], 0));
-			int user_id = stoi(GetParameter(tasks[i], 1));
-			int good_id = stoi(GetParameter(tasks[i], 2));
-			int type = stoi(GetParameter(tasks[i], 3));
-			int count = stoi(GetParameter(tasks[i], 4));
-			Task* task = new Task(id, user_id, good_id, type, count);
-			if (task->GetId() == id) {
-				string line;
-				line = User::GenerateId(to_string(user_id) + "reports.txt") + "," + this->print_task('r') + "," + "Выполнена|";
-				Record(to_string(user_id) + "reports.txt", line, 'a');
-			}
-			else {
-				if (index == 0) {
-					task->save('c');
-				}
-
-				else {
-					task->save();
-				}
-
-				index++;
-			}
-		}
-	}					// Добавить вывод отчёт
-};
 
 
 class Good
@@ -354,6 +255,106 @@ public:
 
 };
 
+class Task
+{
+private:
+	int id;
+	int user_id;
+	int good_id;
+	int count;
+	int type;
+
+public:
+
+	int GetId() { return this->id; }
+	void SetId(int id) { this->id = id; }
+	int GetUserId() { return this->user_id; }
+	void SetUserId(int UserId) { this->user_id = UserId; }
+	int GetGoodId() { return this->good_id; }
+	void SetGoodId(int good_id) { this->good_id = good_id; }
+	int GetCount() { return this->count; }
+	void SetCount(int count) { this->count = count; }
+	int GetType() { return this->type; }
+	void SetType(int type) { this->type = type; }
+
+	Task() {
+		this->id = 0;
+		this->user_id = 0;
+		this->good_id = 0;
+		this->count = 0;
+		this->type = 0;
+	}
+
+	Task(int id, int user_id, int good_id, int type, int count) {
+		this->id = id;
+		this->user_id = user_id;
+		this->good_id = good_id;
+		this->count = count;
+		this->type = type;
+	}
+
+	string print_task(char type = 'p') {
+		string string_type, good_name, user_name;
+		if (this->type == 1) {
+			string_type = "Загрузка";
+		}
+		else {
+			string_type = "Разгрузка";
+		}
+		vector<string> goods = notes("Goods.txt");
+		int index = 0;
+		for (std::vector<string>::size_type i = 0; i != goods.size(); i++) {
+			if (stoi(GetParameter(goods[i], 0)) == good_id) { good_name = GetParameter(goods[i], 1); }
+		}
+		vector<string> users = notes("users.txt");
+		index = 0;
+		for (std::vector<string>::size_type i = 0; i != users.size(); i++) {
+			if (stoi(GetParameter(users[i], 0)) == user_id) { user_name = GetParameter(users[i], 1) + " " + GetParameter(users[i], 2); }
+		}
+		if (type == 'p') {
+			cout << "Task(" << to_string(this->id) << ", " << user_name << ", " << good_name << "," << string_type << "," << to_string(this->count) << ")" << endl;
+			return "0";
+		}
+		else {
+			return   user_name + ", " + good_name + "," + string_type + "," + to_string(this->count);
+		}
+	}
+
+	void save(char mode = 'a') {
+		string task = to_string(this->id) + "," + to_string(this->user_id) + "," + to_string(this->good_id) + "," + to_string(this->type) + ","
+			+ to_string(this->count) + "|";
+		Record("tasks.txt", task, mode);
+	}
+
+	void complete() {
+		vector<string> tasks = notes("tasks.txt");
+		int index = 0;
+		for (std::vector<string>::size_type i = 0; i != tasks.size(); i++) {
+			int id = stoi(GetParameter(tasks[i], 0));
+			int user_id = stoi(GetParameter(tasks[i], 1));
+			int good_id = stoi(GetParameter(tasks[i], 2));
+			int type = stoi(GetParameter(tasks[i], 3));
+			int count = stoi(GetParameter(tasks[i], 4));
+			Task* task = new Task(id, user_id, good_id, type, count);
+			if (task->GetId() == id) {
+				string line;
+				line = User::GenerateId(to_string(user_id) + "reports.txt") + "," + this->print_task('r') + "," + "Выполнена|";
+				Record(to_string(user_id) + "reports.txt", line, 'a');
+			}
+			else {
+				if (index == 0) {
+					task->save('c');
+				}
+				else {
+					task->save();
+				}
+
+				index++;
+			}
+		}
+	}					// Добавить вывод отчёт
+};
+
 
 class Worker : public User
 {
@@ -434,7 +435,7 @@ public:
 		id_complete = getValue();
 		vector<string> tasks = notes("tasks.txt");
 		for (std::vector<string>::size_type i = 0; i != tasks.size(); i++) {
-			if (stoi(GetParameter(tasks[i], 1)) == id_complete) {
+			if (stoi(GetParameter(tasks[i], 0)) == id_complete) {
 				int id = stoi(GetParameter(tasks[i], 0));
 				int user_id = stoi(GetParameter(tasks[i], 1));
 				int good_id = stoi(GetParameter(tasks[i], 2));
@@ -479,7 +480,7 @@ class Admin : public User
 {
 
 public:
-	void WatchReport();
+	
 
 	void SetTask() {
 		string check1;
@@ -581,7 +582,8 @@ public:
 				break;
 			case 7: admin->ChangeGood();
 				break;
-			case 8: break;
+			case 8: admin->WatchReport();
+				break;
 			case 9: admin->SetTask();
 				break;
 			case 0: exit(0);
@@ -592,7 +594,23 @@ public:
 		}
 	}
 
-
+	void WatchReport() {
+		print_users();
+		int id_report;
+		cout << "Введите id работника, отчёты, которого хотите посмотреть: " << endl;
+		id_report = getValue();
+		string check = Fsearch("users.txt", to_string(id_report), 0);
+		if (check == "Error") {
+			cout << "Такого работника нет" << endl;
+		}
+		else {
+			vector<string> reports = notes(to_string(id_report)+"reports.txt");
+			int index = 0;
+			for (std::vector<string>::size_type i = 0; i != reports.size(); i++) {
+				cout << reports[i] << endl;
+			}
+		}
+	}
 	
 
 	void DeleteGood() {
